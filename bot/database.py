@@ -42,6 +42,16 @@ class Database:
     
     async def delete_user(self, user_id):
         await self.col.delete_many({'id': int(user_id)})
+    
+    async def get_api(self, id):
+        user = await self.get_user(id)
+        return user.get("api", None)
+
+    async def update_api(self, id, api):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["api"] = api
+        await self.col.update_one({"id": id}, {"$set": {"api": api}})
 
 
 db = Database()

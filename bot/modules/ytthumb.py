@@ -43,13 +43,6 @@ photo_buttons = InlineKeyboardMarkup(
 
 async def ytthumb_cb_data(_, message):
     
-    # authorising
-    if not auth(message.from_user.id):
-        return
-    
-    # add user to database
-    await add_user(message)
-    
     if (message.from_user.id != message.message.reply_to_message.from_user.id):
         await message.answer("This is not for you.")
         return

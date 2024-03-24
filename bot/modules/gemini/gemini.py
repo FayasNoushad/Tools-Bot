@@ -1,49 +1,27 @@
 import os
 import textwrap
 import PIL.Image
-from vars import GEMINI_API
-from ..admin import auth, add_user
+from ...database import db
+from ...admin import auth, add_user
 from pyrogram import Client, filters
 import google.generativeai as genai
-from IPython.display import display
 from IPython.display import Markdown
 
 
-HELP = """
---**Gemini AI**--
+def check_api(api_key):
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel('gemini-pro')
+    try:
+        # for testing the API
+        response = model.generate_content('Hello')
+        return True
+    except:
+        return False
 
-**Text only:**
-- Just send me question as text with /ai command
-- I will reply with generated text
 
-**Photo only:**
-- Just send me photo
-- Then reply /ai command to the photo
-- I will reply with generated text
-
-**Photo and Text:**
-- Send me a photo
-- Reply /ai command with text to the photo
-- I will reply with generated text
-"""
-
-# Gemini AI Help Message
-@Client.on_message(
-    filters.command(
-        ["aihelp", "ai_help", "geminihelp", "gemini_help", "geminiai_help", "bardhelp", "bard_help"]
-    )
-)
-async def gemini_help(_, message):
-    
-    # authorising
-    if not auth(message.from_user.id):
-        return
-    
-    # add user to database
-    await add_user(message)
-    
+async def no_api(message):
     await message.reply_text(
-        text=HELP,
+        text="You didn't set your API. Please set your API.\n/help for more details.",
         quote=True
     )
 
@@ -95,12 +73,17 @@ async def gemini_ai_text(_, message, text=""):
         else:
             query = message.text.split(" ", 1)[1]
     
-    genai.configure(api_key=GEMINI_API)
+    api = await db.get_api(message.from_user.id)
+    if not api:
+        await no_api(message)
+        return
+    genai.configure(api_key=api)
     model = genai.GenerativeModel('gemini-pro')
+    
     try:
         response = model.generate_content(query)
     except Exception as e:
-        await m.edit_text("e", disable_web_page_preview=True)
+        await m.edit_text(e, disable_web_page_preview=True)
         return
     
     if response.parts:
@@ -158,7 +141,11 @@ async def gemini_ai_img(_, message):
     image = await message.reply_to_message.download()
     img = PIL.Image.open(image)
     
-    genai.configure(api_key=GEMINI_API)
+    api = await db.get_api(message.from_user.id)
+    if not api:
+        await no_api(message)
+        return
+    genai.configure(api_key=api)
     model = genai.GenerativeModel('gemini-pro-vision')
     
     try:
