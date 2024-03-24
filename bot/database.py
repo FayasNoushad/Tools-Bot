@@ -12,7 +12,7 @@ class Database:
     def new_user(self, id):
         return dict(
             id=id,
-            api=None
+            gemini_api=None
         )
     
     async def add_user(self, id):
@@ -50,8 +50,8 @@ class Database:
     async def update_api(self, id, api):
         if id not in self.cache:
             self.cache[id] = await self.get_user(id)
-        self.cache[id]["api"] = api
-        await self.col.update_one({"id": id}, {"$set": {"api": api}})
+        self.cache[id]["gemini_api"] = api
+        await self.col.update_one({"id": id}, {"$set": {"gemini_api": api}})
 
 
 db = Database()
