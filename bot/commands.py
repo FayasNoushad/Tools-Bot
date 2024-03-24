@@ -80,7 +80,28 @@ BUTTONS = InlineKeyboardMarkup(
 )
 
 
-@Client.on_message(filters.command(["start"]))
+@Client.on_message(filters.group & filters.command(["start", "help", "about"]))
+async def group_commands(bot, message):
+    
+    # authorising
+    if not auth(message.from_user.id):
+        return
+    
+    # add user to database
+    await add_user(message)
+    
+    username = (await bot.get_me()).username
+    buttons = InlineKeyboardMarkup(
+        [[InlineKeyboardButton('Click here', url=f'https://telegram.me/{username}?start=help')]]
+    )
+    await message.reply_text(
+        text="You can use this command in private chat with me.",
+        reply_markup=buttons,
+        quote=True
+    )
+
+
+@Client.on_message(filters.private & filters.command(["start"]))
 async def start(bot, message, cb=False):
     
     # authorising
@@ -89,6 +110,11 @@ async def start(bot, message, cb=False):
     
     # add user to database
     await add_user(message)
+    
+    if not cb:
+        if len(message.text.split()) > 1:
+            await help(bot, message)
+            return
     
     text=START_TEXT.format(message.from_user.mention)
     if cb:
@@ -106,7 +132,7 @@ async def start(bot, message, cb=False):
         )
 
 
-@Client.on_message(filters.command(["help"]))
+@Client.on_message(filters.private & filters.command(["help"]))
 async def help(bot, message, cb=False):
     
     # authorising
@@ -131,7 +157,7 @@ async def help(bot, message, cb=False):
         )
 
 
-@Client.on_message(filters.command(["about"]))
+@Client.on_message(filters.private & filters.command(["about"]))
 async def about(bot, message, cb=False):
     
     # authorising
