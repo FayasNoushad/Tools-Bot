@@ -12,7 +12,8 @@ class Database:
     def new_user(self, id):
         return dict(
             id=id,
-            gemini_api=None
+            gemini_api=None,
+            tr_lang="en"
         )
     
     async def add_user(self, id):
@@ -43,15 +44,25 @@ class Database:
     async def delete_user(self, user_id):
         await self.col.delete_many({'id': int(user_id)})
     
-    async def get_api(self, id):
+    async def get_gemini_api(self, id):
         user = await self.get_user(id)
-        return user.get("api", None)
+        return user.get("gemini_api", None)
 
-    async def update_api(self, id, api):
+    async def update_gemini_api(self, id, api):
         if id not in self.cache:
             self.cache[id] = await self.get_user(id)
         self.cache[id]["gemini_api"] = api
         await self.col.update_one({"id": id}, {"$set": {"gemini_api": api}})
+    
+    async def get_tr_lang(self, id):
+        user = await self.get_user(id)
+        return user.get("tr_lang", "en")
+    
+    async def update_tr_lang(self, id, language):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["tr_lang"] = language
+        await self.col.update_one({"id": id}, {"$set": {"tr_lang": language}})
 
 
 db = Database()

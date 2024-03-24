@@ -11,8 +11,8 @@ async def gemini_cb_data(_, message):
     
     if data == "confirm_delete_api":
         await m.edit_text("Deleting your Gemini API Key...")
-        if await db.get_api(message.from_user.id):
-            await db.update_api(message.from_user.id, None)
+        if await db.get_gemini_api(message.from_user.id):
+            await db.update_gemini_api(message.from_user.id, None)
             await m.edit_text("API Key removed successfully")
         else:
             await m.edit_text("You haven't added your Gemini API Key")

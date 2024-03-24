@@ -1,8 +1,9 @@
 from pyrogram import Client
 from .admin import auth, add_user
+from .commands import start, help, about
 from .modules.ytthumb import ytthumb_cb_data
 from .modules.gemini.cb import gemini_cb_data
-from .commands import start, help, about
+from .modules.translate.cb import tr_cb_data
 
 
 @Client.on_callback_query()
@@ -21,6 +22,10 @@ async def cb_data(_, message):
     
     if message.data.startswith("gemini"):
         await gemini_cb_data(_, message)
+        return
+    
+    if message.data.startswith("tr"):
+        await tr_cb_data(_, message)
         return
     
     if message.data == "home":

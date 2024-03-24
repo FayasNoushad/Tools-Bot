@@ -55,7 +55,7 @@ async def gemini_help(_, message):
         ["geminiapi", "add_api", "add_gemini_api", "addapi", "updateapi", "update_api"]
     )
 )
-async def add_gemini_api(bot, message):
+async def add_api(bot, message):
     
     # authorising
     if not auth(message.from_user.id):
@@ -71,8 +71,8 @@ async def add_gemini_api(bot, message):
     api = message.text.split(" ", 1)[1]
     m = await message.reply_text("Checking API Key...")
     if check_api(api):
-        await db.update_api(id=message.from_user.id, api=api)
-        if await db.get_api(message.from_user.id):
+        await db.update_gemini_api(id=message.from_user.id, api=api)
+        if await db.get_gemini_api(message.from_user.id):
             text = "API Key updated successfully"
         else:
             text = "API Key added successfully"

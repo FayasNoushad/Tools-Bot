@@ -73,7 +73,7 @@ async def gemini_ai_text(_, message, text=""):
         else:
             query = message.text.split(" ", 1)[1]
     
-    api = await db.get_api(message.from_user.id)
+    api = await db.get_gemini_api(message.from_user.id)
     if not api:
         await no_api(message)
         return
@@ -141,7 +141,7 @@ async def gemini_ai_img(_, message):
     image = await message.reply_to_message.download()
     img = PIL.Image.open(image)
     
-    api = await db.get_api(message.from_user.id)
+    api = await db.get_gemini_api(message.from_user.id)
     if not api:
         await no_api(message)
         return
