@@ -1,6 +1,5 @@
-from .admin import auth
-from pyrogram import Client
-from pyrogram import filters
+from .admin import auth, add_user
+from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
@@ -82,21 +81,24 @@ BUTTONS = InlineKeyboardMarkup(
 
 
 @Client.on_message(filters.command(["start"]))
-async def start(bot, update, cb=False):
+async def start(bot, message, cb=False):
     
     # authorising
-    if not auth(update.from_user.id):
+    if not auth(message.from_user.id):
         return
     
-    text=START_TEXT.format(update.from_user.mention)
+    # add user to database
+    await add_user(message)
+    
+    text=START_TEXT.format(message.from_user.mention)
     if cb:
-        await update.message.edit_text(
+        await message.message.edit_text(
             text=text,
             reply_markup=START_BUTTONS,
             disable_web_page_preview=True
         )
     else:
-        await update.reply_text(
+        await message.reply_text(
             text=text,
             disable_web_page_preview=True,
             reply_markup=START_BUTTONS,
@@ -105,20 +107,23 @@ async def start(bot, update, cb=False):
 
 
 @Client.on_message(filters.command(["help"]))
-async def help(bot, update, cb=False):
+async def help(bot, message, cb=False):
     
     # authorising
-    if not auth(update.from_user.id):
+    if not auth(message.from_user.id):
         return
     
+    # add user to database
+    await add_user(message)
+    
     if cb:
-        await update.message.edit_text(
+        await message.message.edit_text(
             text=HELP_TEXT,
             reply_markup=HELP_BUTTONS,
             disable_web_page_preview=True
         )
     else:
-        await update.reply_text(
+        await message.reply_text(
             text=HELP_TEXT,
             reply_markup=HELP_BUTTONS,
             disable_web_page_preview=True,
@@ -127,20 +132,23 @@ async def help(bot, update, cb=False):
 
 
 @Client.on_message(filters.command(["about"]))
-async def about(bot, update, cb=False):
+async def about(bot, message, cb=False):
     
     # authorising
-    if not auth(update.from_user.id):
+    if not auth(message.from_user.id):
         return
     
+    # add user to database
+    await add_user(message)
+    
     if cb:
-        await update.message.edit_text(
+        await message.message.edit_text(
             text=ABOUT_TEXT,
             reply_markup=ABOUT_BUTTONS,
             disable_web_page_preview=True
         )
     else:
-        await update.reply_text(
+        await message.reply_text(
             text=ABOUT_TEXT,
             reply_markup=ABOUT_BUTTONS,
             disable_web_page_preview=True,

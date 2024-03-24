@@ -21,6 +21,7 @@ A telegram tools bot for groups
 - `API_HASH` Your API Hash from my.telegram.org
 - `API_ID` Your API ID from my.telegram.org
 - `BOT_TOKEN` Your bot token from @BotFather
+- `DATABASE_URL` MongoDB URL
 - `GEMINI_API` Your Gemini API from [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
 - `AUTH_USERS` Authorised users IDs seperated by whitespace
 

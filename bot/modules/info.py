@@ -1,6 +1,5 @@
-from ..admin import auth
-from pyrogram import Client as Bot
-from pyrogram import filters
+from ..admin import auth, add_user
+from pyrogram import Client, filters
 
 
 TEXT = """
@@ -12,12 +11,17 @@ TEXT = """
 """
 
 # Info Help Message
-@Bot.on_message(filters.command(["info_help", "information_help"]))
+@Client.on_message(
+    filters.command(["info_help", "information_help", "infohelp", "informationhelp"])
+)
 async def info_help(_, message):
     
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     await message.reply_text(
         text=TEXT,
@@ -60,12 +64,15 @@ def chat(chat):
     return text
 
 
-@Bot.on_message((filters.private | filters.group) & filters.command(["info", "information"]))
+@Client.on_message((filters.private | filters.group) & filters.command(["info", "information"]))
 async def info(_, message):
     
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     if (not message.reply_to_message) and ((not message.forward_from) or (not message.forward_from_chat)):
         info = user(message.from_user)

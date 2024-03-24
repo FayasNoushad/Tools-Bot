@@ -1,7 +1,7 @@
 # Author: Fayas (https://github.com/FayasNoushad) (@FayasNoushad)
 
 import ytthumb
-from ..admin import auth
+from ..admin import auth, add_user
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto
 
@@ -18,12 +18,17 @@ TEXT = """
 """
 
 # YT Thumbnail Help Message
-@Client.on_message(filters.command(["ytthumb_help", "ytthumbnail_help"]))
+@Client.on_message(
+    filters.command(["ytthumb_help", "ytthumbnail_help", "ytthumbhelp", "ytthumbnailhelp"])
+)
 async def ytthumb_help(bot, message):
     
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     await message.reply_text(
         text=TEXT,
@@ -41,6 +46,9 @@ async def ytthumb_cb_data(_, message):
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     if (message.from_user.id != message.message.reply_to_message.from_user.id):
         await message.answer("This is not for you.")
@@ -91,6 +99,9 @@ async def ytthumb_qualities(_, message):
     if not auth(message.from_user.id):
         return
     
+    # add user to database
+    await add_user(message)
+    
     text = "--**Qualities**--\n"
     for quality in ytthumb.qualities():
         text += f"\n**{quality}** - `{ytthumb.qualities()[quality]}`"
@@ -106,6 +117,9 @@ async def send_yt_thumbnail(_, message):
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     m = await message.reply_text(
         text="`Analysing...`",
@@ -164,5 +178,3 @@ async def send_yt_thumbnail(_, message):
             text=error,
             disable_web_page_preview=True
         )
-
-

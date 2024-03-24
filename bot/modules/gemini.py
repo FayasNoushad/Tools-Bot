@@ -2,7 +2,7 @@ import os
 import textwrap
 import PIL.Image
 from vars import GEMINI_API
-from ..admin import auth
+from ..admin import auth, add_user
 from pyrogram import Client, filters
 import google.generativeai as genai
 from IPython.display import display
@@ -39,6 +39,9 @@ async def gemini_help(_, message):
     if not auth(message.from_user.id):
         return
     
+    # add user to database
+    await add_user(message)
+    
     await message.reply_text(
         text=HELP,
         quote=True
@@ -58,6 +61,9 @@ async def gemini_ai(_, message):
     if not auth(message.from_user.id):
         return
     
+    # add user to database
+    await add_user(message)
+    
     if (message.reply_to_message) and (message.reply_to_message.photo):
         await gemini_ai_img(_, message)
     else:
@@ -71,6 +77,9 @@ async def gemini_ai_text(_, message, text=""):
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     # To avoid command only messages
     if message.text.startswith("/") and (" " not in message.text) and (not message.reply_to_message) and (not message.reply_to_message.text):
@@ -140,6 +149,9 @@ async def gemini_ai_img(_, message):
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     m = await message.reply_text("Please wait...", quote=True)
     

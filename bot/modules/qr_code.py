@@ -2,7 +2,7 @@ import os
 import pyqrcode
 from PIL import Image
 from pyzbar.pyzbar import decode
-from ..admin import auth
+from ..admin import auth, add_user
 from pyrogram import Client, filters
 
 
@@ -22,6 +22,9 @@ async def qr_help(bot, message):
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     await message.reply_text(
         text=HELP_TEXT,
@@ -43,6 +46,9 @@ async def qr_decode(bot, message):
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     if not message.reply_to_message:
         await message.reply_text(
@@ -97,6 +103,9 @@ async def qr(bot, message):
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     if message.reply_to_message and message.reply_to_message.text:
         text = message.reply_to_message.text

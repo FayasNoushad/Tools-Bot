@@ -1,6 +1,6 @@
 import os
 from io import BytesIO
-from ..admin import auth
+from ..admin import auth, add_user
 from pyrogram import Client, filters
 from googletrans import Translator, constants
 
@@ -15,12 +15,17 @@ DEFAULT_LANGUAGE = os.environ.get("DEFAULT_LANGUAGE", "en")
 
 
 # Translate Help Message
-@Client.on_message(filters.command(["trhelp", "tr_help", "translatehelp", "translate_help"]))
+@Client.on_message(
+    filters.command(["trhelp", "tr_help", "translatehelp", "translate_help"])
+)
 async def tr_help(bot, message):
     
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     await message.reply_text(
         text=HELP_TEXT,
@@ -34,6 +39,9 @@ async def languages_list(bot, message):
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     languages = constants.LANGUAGES
     languages_text = "**Languages**\n"
@@ -52,6 +60,9 @@ async def translate(bot, message):
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     text = message.reply_to_message.text
     if " " in message.text:

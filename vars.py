@@ -12,3 +12,7 @@ AUTH_USERS = set(int(x) for x in os.environ.get("AUTH_USERS", "").split())
 
 # gemini api key from aistudio.google.com/app/apikey
 GEMINI_API = os.environ.get("GEMINI_API", "")
+
+# Database (MongoDB)
+DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_NAME = os.environ.get("DATABASE_NAME", "Tools-Bot")

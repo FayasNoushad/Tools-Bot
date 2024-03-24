@@ -1,5 +1,5 @@
 import urllib
-from ..admin import auth
+from ..admin import auth, add_user
 from countryinfo import CountryInfo
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -33,6 +33,9 @@ async def country_help(_, message):
     if not auth(message.from_user.id):
         return
     
+    # add user to database
+    await add_user(message)
+    
     await message.reply_text(
         text=TEXT,
         quote=True
@@ -47,6 +50,9 @@ async def country_info(_, message):
     # authorising
     if not auth(message.from_user.id):
         return
+    
+    # add user to database
+    await add_user(message)
     
     try:
         if (" " in message.text):
