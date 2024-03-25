@@ -13,7 +13,8 @@ class Database:
         return dict(
             id=id,
             gemini_api=None,
-            tr_lang="en"
+            tr_lang="en",
+            qr_as_file=False
         )
     
     async def add_user(self, id):
@@ -63,6 +64,14 @@ class Database:
             self.cache[id] = await self.get_user(id)
         self.cache[id]["tr_lang"] = language
         await self.col.update_one({"id": id}, {"$set": {"tr_lang": language}})
+    
+    async def is_qr_as_file(self, id):
+        user = await self.get_user(id)
+        return user.get("as_file", False)
+
+    async def update_qr_as_file(self, id, as_file):
+        self.cache[id]["as_file"] = as_file
+        await self.col.update_one({"id": id}, {"$set": {"as_file": as_file}})
 
 
 db = Database()
