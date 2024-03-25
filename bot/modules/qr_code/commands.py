@@ -16,11 +16,8 @@ Note: Only text and link QR codes are supported for encoding and decoding."""
 async def qr_help(bot, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     await message.reply_text(
         text=HELP_TEXT,

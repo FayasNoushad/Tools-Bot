@@ -36,11 +36,8 @@ def to_markdown(text):
 async def gemini_ai(_, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     if (message.reply_to_message) and (message.reply_to_message.photo):
         await gemini_ai_img(_, message)
@@ -53,11 +50,8 @@ async def gemini_ai(_, message):
 async def gemini_ai_text(_, message, text=""):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     # To avoid command only messages
     if message.text.startswith("/") and (" " not in message.text) and (not message.reply_to_message) and (not message.reply_to_message.text):
@@ -130,11 +124,8 @@ async def gemini_ai_text(_, message, text=""):
 async def gemini_ai_img(_, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     m = await message.reply_text("Please wait...", quote=True)
     

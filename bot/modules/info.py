@@ -17,11 +17,8 @@ TEXT = """
 async def info_help(_, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     await message.reply_text(
         text=TEXT,
@@ -68,11 +65,8 @@ def chat(chat):
 async def info(_, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     if (not message.reply_to_message) and ((not message.forward_from) or (not message.forward_from_chat)):
         info = user(message.from_user)

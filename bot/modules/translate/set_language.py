@@ -73,11 +73,8 @@ def language_buttons():
 async def settings(bot, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     if message.chat.type != enums.ChatType.PRIVATE:
         username = (await bot.get_me()).username

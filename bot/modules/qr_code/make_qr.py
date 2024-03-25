@@ -13,11 +13,8 @@ from pyrogram import Client, filters
 async def qr(bot, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     if message.reply_to_message and message.reply_to_message.text:
         text = message.reply_to_message.text

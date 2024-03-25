@@ -30,11 +30,8 @@ Example: /countryinfo India"""
 async def country_help(_, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     await message.reply_text(
         text=TEXT,
@@ -48,11 +45,8 @@ async def country_help(_, message):
 async def country_info(_, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     try:
         if (" " in message.text):

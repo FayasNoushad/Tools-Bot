@@ -7,11 +7,8 @@ from pyrogram import Client, filters
 async def languages_list(bot, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     languages = constants.LANGUAGES
     languages_text = "**Languages**\n"
@@ -22,4 +19,3 @@ async def languages_list(bot, message):
         disable_web_page_preview=True,
         quote=True
     )
-

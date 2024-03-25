@@ -12,6 +12,7 @@ class Database:
     def new_user(self, id):
         return dict(
             id=id,
+            auth=False,
             gemini_api=None,
             tr_lang="en",
             qr_as_file=False
@@ -31,7 +32,7 @@ class Database:
         return user
     
     async def is_user_exist(self, id):
-        user = await self.col.find_one({'id':int(id)})
+        user = await self.col.find_one({'id': int(id)})
         return True if user else False
     
     async def total_users_count(self):
@@ -44,6 +45,16 @@ class Database:
     
     async def delete_user(self, user_id):
         await self.col.delete_many({'id': int(user_id)})
+
+    async def is_authorised(self, id):
+        user = await self.get_user(id)
+        return user.get("auth", False)
+    
+    async def authorise(self, id):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["auth"] = True
+        await self.col.update_one({"id": id}, {"$set": {"auth": True}})
     
     async def get_gemini_api(self, id):
         user = await self.get_user(id)

@@ -36,12 +36,12 @@ HELP = """
 )
 async def gemini_help(_, message):
     
-    # authorising
-    if not auth(message.from_user.id):
-        return
-    
     # add user to database
     await add_user(message)
+    
+    # authorising
+    if not (await auth(message.from_user.id)):
+        return
     
     await message.reply_text(
         text=HELP,
@@ -58,7 +58,7 @@ async def gemini_help(_, message):
 async def add_api(bot, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
     
     # adding user to database
@@ -89,11 +89,8 @@ async def add_api(bot, message):
 async def get_api(bot, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # adding user to database
-    await add_user(message)
     
     api = await db.get_api(message.from_user.id)
     if api:
@@ -111,11 +108,8 @@ async def get_api(bot, message):
 async def delete_api(bot, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # adding user to database
-    await add_user(message)
     
     text = "Are you sure to delete your Gemini API Key?"
     buttons = InlineKeyboardMarkup(

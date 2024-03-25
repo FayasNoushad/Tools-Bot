@@ -10,7 +10,7 @@ TEXT = """
 - Send a youtube video link or video ID.
 - Then reply /ytthumb with quality or /ytthumb only.
 - I will send the thumbnail.
-- Qualities (/qualities) are:
+- Qualities (/ytthumb_qualities) are:
   - sd - Standard Quality
   - mq - Medium Quality
   - hq - High Quality
@@ -24,11 +24,8 @@ TEXT = """
 async def ytthumb_help(bot, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     await message.reply_text(
         text=TEXT,
@@ -89,11 +86,8 @@ async def ytthumb_cb_data(_, message):
 async def ytthumb_qualities(_, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     text = "--**Qualities**--\n"
     for quality in ytthumb.qualities():
@@ -108,11 +102,8 @@ async def ytthumb_qualities(_, message):
 async def send_yt_thumbnail(_, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     m = await message.reply_text(
         text="`Analysing...`",

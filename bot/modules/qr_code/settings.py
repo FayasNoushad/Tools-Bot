@@ -8,11 +8,8 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 async def display_settings(bot, message, cb=False, cb_text=False):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     chat_id = message.from_user.id
     as_file = await db.is_qr_as_file(chat_id)

@@ -84,11 +84,8 @@ BUTTONS = InlineKeyboardMarkup(
 async def group_commands(bot, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     username = (await bot.get_me()).username
     buttons = InlineKeyboardMarkup(
@@ -105,11 +102,8 @@ async def group_commands(bot, message):
 async def start(bot, message, cb=False):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     if not cb:
         if len(message.text.split()) > 1:
@@ -136,11 +130,8 @@ async def start(bot, message, cb=False):
 async def help(bot, message, cb=False):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     if cb:
         await message.message.edit_text(
@@ -161,11 +152,8 @@ async def help(bot, message, cb=False):
 async def about(bot, message, cb=False):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     if cb:
         await message.message.edit_text(

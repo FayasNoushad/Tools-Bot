@@ -11,11 +11,8 @@ from .modules.qr_code.cb import qr_cb_data
 async def cb_data(_, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     if message.data.startswith("ytthumb"):
         await ytthumb_cb_data(_, message)

@@ -16,11 +16,8 @@ from pyrogram import Client, filters
 async def qr_decode(bot, message):
     
     # authorising
-    if not auth(message.from_user.id):
+    if not (await auth(message.from_user.id)):
         return
-    
-    # add user to database
-    await add_user(message)
     
     if not message.reply_to_message:
         await message.reply_text(
