@@ -46,37 +46,47 @@ class Database:
     async def delete_user(self, user_id):
         await self.col.delete_many({'id': int(user_id)})
 
+    # returns True, if user is an authorised user
+    # returns False, if user is not an authorised user
     async def is_authorised(self, id):
         user = await self.get_user(id)
         return user.get("auth", False)
     
+    # authorise
     async def authorise(self, id):
         if id not in self.cache:
             self.cache[id] = await self.get_user(id)
         self.cache[id]["auth"] = True
         await self.col.update_one({"id": id}, {"$set": {"auth": True}})
     
+    # unauthorise
     async def unauthorise(self, id):
         await self.col.update_one({"id": id}, {"$set": {"auth": False}})
     
+    # get gemini api key to using ai
     async def get_gemini_api(self, id):
         user = await self.get_user(id)
         return user.get("gemini_api", None)
 
+    # add/update gemini api key
     async def update_gemini_api(self, id, api):
         await self.col.update_one({"id": id}, {"$set": {"gemini_api": api}})
     
+    # get translation language to translate
     async def get_tr_lang(self, id):
         user = await self.get_user(id)
         return user.get("tr_lang", "en")
     
+    # update translation language
     async def update_tr_lang(self, id, language):
         await self.col.update_one({"id": id}, {"$set": {"tr_lang": language}})
     
+    # to upload qr code (as photo or file)
     async def is_qr_as_file(self, id):
         user = await self.get_user(id)
         return user.get("as_file", False)
 
+    # update qr code upload mode (photo or file)
     async def update_qr_as_file(self, id, as_file):
         await self.col.update_one({"id": id}, {"$set": {"as_file": as_file}})
 
