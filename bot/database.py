@@ -56,14 +56,14 @@ class Database:
         self.cache[id]["auth"] = True
         await self.col.update_one({"id": id}, {"$set": {"auth": True}})
     
+    async def unauthorise(self, id):
+        await self.col.update_one({"id": id}, {"$set": {"auth": False}})
+    
     async def get_gemini_api(self, id):
         user = await self.get_user(id)
         return user.get("gemini_api", None)
 
     async def update_gemini_api(self, id, api):
-        if id not in self.cache:
-            self.cache[id] = await self.get_user(id)
-        self.cache[id]["gemini_api"] = api
         await self.col.update_one({"id": id}, {"$set": {"gemini_api": api}})
     
     async def get_tr_lang(self, id):
@@ -71,9 +71,6 @@ class Database:
         return user.get("tr_lang", "en")
     
     async def update_tr_lang(self, id, language):
-        if id not in self.cache:
-            self.cache[id] = await self.get_user(id)
-        self.cache[id]["tr_lang"] = language
         await self.col.update_one({"id": id}, {"$set": {"tr_lang": language}})
     
     async def is_qr_as_file(self, id):
@@ -81,7 +78,6 @@ class Database:
         return user.get("as_file", False)
 
     async def update_qr_as_file(self, id, as_file):
-        self.cache[id]["as_file"] = as_file
         await self.col.update_one({"id": id}, {"$set": {"as_file": as_file}})
 
 
