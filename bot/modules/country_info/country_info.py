@@ -1,42 +1,9 @@
 import urllib
-from ..admin import auth, add_user
+from ...admin import auth
 from countryinfo import CountryInfo
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-TEXT = """
---**Country Information**--
-
-- Just send me /countryinfo with a country name
-- Then I will check and send you the informations
-
-**Informations :-**
-Name, Native Name, Capital, Population, Region, Sub Region, \
-Top Level Domains, Calling Codes, Currencies, Residence, \
-Timezone, Wikipedia, Google
-
-Example: /countryinfo India"""
-
-
-# Country information help message
-@Client.on_message(
-    filters.command(
-        [
-            "countryinfo_help", "country_info_help", "country_help",
-            "countryinfohelp", "country_infohelp", "countryhelp"
-        ]
-    )
-)
-async def country_help(_, message):
-    
-    # authorising
-    if not (await auth(message.from_user.id)):
-        return
-    
-    await message.reply_text(
-        text=TEXT,
-        quote=True
-    )
 
 
 @Client.on_message(
@@ -51,9 +18,13 @@ async def country_info(_, message):
     try:
         if (" " in message.text):
             country = CountryInfo(message.text.split(" ", 1)[1])
-        else:
-            if (message.reply_to_message) and (message.reply_to_message.text):
+        elif (message.reply_to_message) and (message.reply_to_message.text):
                 country = CountryInfo(message.reply_to_message.text)
+        else:
+            await message.reply_text(
+                text="Send a country name."
+            )
+            return
     except KeyError:
         await message.reply_text(
             text="Key error.\nCan you check the name again."

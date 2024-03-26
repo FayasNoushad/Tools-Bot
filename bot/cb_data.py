@@ -1,7 +1,7 @@
+from .admin import auth
 from pyrogram import Client
-from .admin import auth, add_user
 from .commands import start, help, about
-from .modules.ytthumb import ytthumb_cb_data
+from .modules.yt_thumb.cb import ytthumb_cb_data
 from .modules.gemini.cb import gemini_cb_data
 from .modules.translate.cb import tr_cb_data
 from .modules.qr_code.cb import qr_cb_data
