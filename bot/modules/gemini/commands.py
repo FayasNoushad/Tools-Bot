@@ -1,5 +1,5 @@
 from ...database import db
-from ...admin import auth, add_user
+from ...admin import auth
 from .gemini import check_api
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton

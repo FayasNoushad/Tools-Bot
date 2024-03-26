@@ -1,4 +1,4 @@
-from ...admin import auth, add_user
+from ...admin import auth
 from pyrogram import Client, filters
 
 

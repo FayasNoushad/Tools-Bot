@@ -2,7 +2,7 @@ import os
 from io import BytesIO
 from ...database import db
 from googletrans import Translator
-from ...admin import auth, add_user
+from ...admin import auth
 from pyrogram import Client, filters
 
 

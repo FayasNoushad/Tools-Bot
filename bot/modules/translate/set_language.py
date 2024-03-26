@@ -1,5 +1,5 @@
 from ...database import db
-from ...admin import auth, add_user
+from ...admin import auth
 from googletrans.constants import LANGUAGES
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
