@@ -65,6 +65,8 @@ class Database:
     
     # get gemini api key to using ai
     async def get_gemini_api(self, id):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
         user = await self.get_user(id)
         return user.get("gemini_api", None)
 
@@ -74,6 +76,8 @@ class Database:
     
     # get translation language to translate
     async def get_tr_lang(self, id):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
         user = await self.get_user(id)
         return user.get("tr_lang", "en")
     
@@ -83,6 +87,8 @@ class Database:
     
     # to upload qr code (as photo or file)
     async def is_qr_as_file(self, id):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
         user = await self.get_user(id)
         return user.get("as_file", False)
 

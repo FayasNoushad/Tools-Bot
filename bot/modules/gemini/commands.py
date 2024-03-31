@@ -36,9 +36,6 @@ HELP = """
 )
 async def gemini_help(_, message):
     
-    # add user to database
-    await add_user(message)
-    
     # authorising
     if not (await auth(message.from_user.id)):
         return
@@ -61,9 +58,6 @@ async def add_api(bot, message):
     if not (await auth(message.from_user.id)):
         return
     
-    # adding user to database
-    await add_user(message)
-    
     if (" " not in message.text):
         await message.reply_text("Send your Gemini API Key")
         return
@@ -80,6 +74,7 @@ async def add_api(bot, message):
     else:
         await m.edit_text("Invalid API Key")
 
+
 @Client.on_message(
     filters.private &
     filters.command(
@@ -92,7 +87,7 @@ async def get_api(bot, message):
     if not (await auth(message.from_user.id)):
         return
     
-    api = await db.get_api(message.from_user.id)
+    api = await db.get_gemini_api(message.from_user.id)
     if api:
         await message.reply_text(f"Your Gemini API Key is\n`{api}`")
     else:

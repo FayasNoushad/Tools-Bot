@@ -34,7 +34,6 @@ async def translate(bot, message):
         if len(translate_text) < 4096:
             await message.edit_text(
                 text=translate_text,
-                quote=True,
                 disable_web_page_preview=True
             )
         else:
