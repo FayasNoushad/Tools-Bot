@@ -1,7 +1,17 @@
 from .database import db
 from vars import AUTH, ADMINS
 from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+
+ADMIN_HELP = """
+--**Admin Help**--
+
+/auth: To authorise a user
+/unauth: To unauthorise a user
+/auth_users: To get authorised users
+/admins: To get all admins
+"""
 
 async def add_user(id):
     if not await db.is_user_exist(id):
@@ -16,6 +26,27 @@ async def auth(id):
         return True
     else:
         return False
+
+
+# admin help
+@Client.on_message(filters.private & filters.command(["admin_help"]))
+async def admin_help(_, message):
+        
+        # Checking admin or not
+        if message.from_user.id not in ADMINS:
+            return
+        
+        await message.reply_text(
+            text=ADMIN_HELP,
+            quote=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton("Other Help", callback_data="help"),
+                    ]
+                ]
+            )
+        )
 
 
 # authorise user via database
