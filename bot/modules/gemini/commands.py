@@ -1,6 +1,7 @@
 from ...database import db
 from ...admin import auth
 from .gemini import check_api
+from ...help import MORE_HELP_ONLY
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -34,16 +35,24 @@ HELP = """
         ["aihelp", "ai_help", "geminihelp", "gemini_help", "geminiai_help", "bardhelp", "bard_help"]
     )
 )
-async def gemini_help(_, message):
+async def gemini_help(_, message, cb=False):
     
     # authorising
     if not (await auth(message.from_user.id)):
         return
     
-    await message.reply_text(
-        text=HELP,
-        quote=True
-    )
+    if cb:
+        await message.message.edit_text(
+            text=HELP,
+            disable_web_page_preview=True,
+            reply_markup=MORE_HELP_ONLY
+        )
+    else:
+        await message.reply_text(
+            text=HELP,
+            disable_web_page_preview=True,
+            quote=True
+        )
 
 
 @Client.on_message(

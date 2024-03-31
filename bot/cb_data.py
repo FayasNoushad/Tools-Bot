@@ -1,10 +1,12 @@
 from .admin import auth
 from pyrogram import Client
 from .commands import start, help, about
-from .modules.yt_thumb.cb import ytthumb_cb_data
-from .modules.gemini.cb import gemini_cb_data
-from .modules.translate.cb import tr_cb_data
+from .modules.info.cb import info_cb_data
 from .modules.qr_code.cb import qr_cb_data
+from .modules.translate.cb import tr_cb_data
+from .modules.gemini.cb import gemini_cb_data
+from .modules.yt_thumb.cb import ytthumb_cb_data
+from .modules.country_info.cb import country_cb_data
 
 
 @Client.on_callback_query()
@@ -14,11 +16,19 @@ async def cb_data(_, message):
     if not (await auth(message.from_user.id)):
         return
     
+    if message.data.startswith("country"):
+        await country_cb_data(_, message)
+        return
+    
+    if message.data.startswith("info"):
+        await info_cb_data(_, message)
+        return
+    
     if message.data.startswith("ytthumb"):
         await ytthumb_cb_data(_, message)
         return
     
-    if message.data.startswith("gemini"):
+    if message.data.startswith("gemini") or message.data.startswith("ai"):
         await gemini_cb_data(_, message)
         return
     

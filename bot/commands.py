@@ -1,4 +1,5 @@
 from .admin import auth
+from .help import HELP_TEXT, HELP_BUTTONS
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -9,26 +10,6 @@ I can help you in groups.
 
 /help for more details."""
 
-HELP_TEXT = """--**More Help**--
-
-- Just send me commands
-- I will reply
-
-**Available Commands:**
-
-- /start: Start the bot
-- /help: Get help and command information
-- /about: Get information about the bot
-
-- /ai_help: Help message for the AI plugin
-- /info_help: Help message for the info plugin
-- /qr_help: Help message for the QR plugin
-- /ytthumb_help: Help message for the YouTube thumbnail plugin
-- /tr_help: Help message for the translation plugin
-- /countryinfo_help: Help message for the country information plugin
-"""
-
-# Add help messages for other plugins here
 
 ABOUT_TEXT = """**About Me**
 
@@ -47,16 +28,6 @@ START_BUTTONS = InlineKeyboardMarkup(
         ],
         [
             InlineKeyboardButton('Feedback', url='https://telegram.me/FayasNoushad')
-        ]
-    ]
-)
-
-HELP_BUTTONS = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton('Home', callback_data='home'),
-            InlineKeyboardButton('About', callback_data='about'),
-            InlineKeyboardButton('Close', callback_data='close')
         ]
     ]
 )

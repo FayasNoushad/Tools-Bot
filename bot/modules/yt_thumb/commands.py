@@ -1,4 +1,5 @@
 from ...admin import auth
+from ...help import MORE_HELP_ONLY
 from pyrogram import Client, filters
 
 
@@ -17,13 +18,20 @@ TEXT = """
 @Client.on_message(
     filters.command(["ytthumb_help", "ytthumbnail_help", "ytthumbhelp", "ytthumbnailhelp"])
 )
-async def ytthumb_help(bot, message):
+async def ytthumb_help(bot, message, cb=False):
     
     # authorising
     if not (await auth(message.from_user.id)):
         return
     
-    await message.reply_text(
-        text=TEXT,
-        quote=True
-    )
+    if cb:
+        await message.message.edit_text(
+            text=TEXT,
+            reply_markup=MORE_HELP_ONLY
+        )
+    else:
+        await message.reply_text(
+            text=TEXT,
+            quote=True,
+            reply_markup=MORE_HELP_ONLY
+        )

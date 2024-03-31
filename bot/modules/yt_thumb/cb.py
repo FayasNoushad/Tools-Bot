@@ -1,4 +1,5 @@
 import ytthumb
+from .commands import ytthumb_help
 from .thumbnail import photo_buttons
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto
 
@@ -6,13 +7,19 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMedi
 
 async def ytthumb_cb_data(_, message):
     
-    if (message.from_user.id != message.message.reply_to_message.from_user.id):
-        await message.answer("This is not for you.")
-        return
     if message.data.startswith("ytthumb"):
         data = message.data.split("-", 1)[1].lower()
     else:
         return
+    
+    if data == "help":
+        await ytthumb_help(_, message, cb=True)
+        return
+    
+    if (message.from_user.id != message.message.reply_to_message.from_user.id):
+        await message.answer("This is not for you.")
+        return
+    
     if data == "qualities":
         await message.answer('Select a quality')
         buttons = []

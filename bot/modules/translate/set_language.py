@@ -83,7 +83,7 @@ async def settings(bot, message):
                 [
                     InlineKeyboardButton(
                         text="Click here",
-                        url=f"https://telegram.me/{username}?start=set"
+                        url=f"https://telegram.me/{username}?start=set_lang"
                     )
                 ]
             ]

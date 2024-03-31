@@ -1,5 +1,7 @@
 from ...admin import auth
+from ...help import MORE_HELP_ONLY
 from pyrogram import Client, filters
+
 
 TEXT = """
 --**Country Information**--
@@ -24,13 +26,22 @@ Example: /countryinfo India"""
         ]
     )
 )
-async def country_help(_, message):
+async def country_help(_, message, cb=False):
     
     # authorising
     if not (await auth(message.from_user.id)):
         return
     
-    await message.reply_text(
-        text=TEXT,
-        quote=True
-    )
+    if cb:
+        await message.message.edit_text(
+            text=TEXT,
+            disable_web_page_preview=True,
+            reply_markup=MORE_HELP_ONLY
+        )
+    else:
+        await message.reply_text(
+            text=TEXT,
+            quote=True,
+            disable_web_page_preview=True,
+            reply_markup=MORE_HELP_ONLY
+        )

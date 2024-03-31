@@ -1,7 +1,7 @@
 from .database import db
 from vars import AUTH, ADMINS
+from .help import MORE_HELP_ONLY
 from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 ADMIN_HELP = """
@@ -39,13 +39,7 @@ async def admin_help(_, message):
         await message.reply_text(
             text=ADMIN_HELP,
             quote=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton("Other Help", callback_data="help"),
-                    ]
-                ]
-            )
+            reply_markup=MORE_HELP_ONLY
         )
 
 
