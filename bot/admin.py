@@ -51,7 +51,7 @@ async def authorise(_, message):
 
 # unauthorise user via database
 @Client.on_message(filters.command(["unauth", "unauthorise"]))
-async def authorise(_, message):
+async def unauthorise(_, message):
     
     # Checking admin or not
     if message.from_user.id not in ADMINS:
@@ -78,3 +78,49 @@ async def authorise(_, message):
         await m.edit_text("Unauthorised successfully.")
     except:
         pass
+
+
+# get authorised users
+@Client.on_message(filters.command(["auth_users", "authorised_users"]))
+async def get_auth_users(bot, message):
+    
+    # Checking admin or not
+    if message.from_user.id not in ADMINS:
+        return
+    
+    m = await message.reply_text("Getting authorised users...", quote=True)
+    
+    try:
+        auth_users = await db.get_auth_users()
+        if len(auth_users) == 0:
+            await m.edit_text("No authorised users found.")
+            return
+        text = "Authorised Users\n"
+        for auth_user in auth_users:
+            user = await bot.get_users(auth_user)
+            text += f"\n{user.mention} (`{str(user.id)}`)"
+        await m.edit_text(text)
+    except Exception as error:
+        print(error)
+        await m.edit_text("Something wrong.")
+
+
+# get all admins
+@Client.on_message(filters.command(["admins"]))
+async def get_admins(bot, message):
+    
+    # Checking admin or not
+    if message.from_user.id not in ADMINS:
+        return
+    
+    m = await message.reply_text("Getting all admins...", quote=True)
+    
+    try:
+        text = "Admins\n"
+        for admin in ADMINS:
+            user = await bot.get_users(admin)
+            text += f"\n{user.mention} (`{str(user.id)}`)"
+        await m.edit_text(text)
+    except Exception as error:
+        print(error)
+        await m.edit_text("Something wrong.")

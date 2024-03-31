@@ -61,39 +61,48 @@ class Database:
     
     # unauthorise
     async def unauthorise(self, id):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
         await self.col.update_one({"id": id}, {"$set": {"auth": False}})
+    
+    # get authorised users ids
+    async def get_auth_users(self):
+        auth_users = []
+        async for user in self.col.find({"auth": True}):
+            auth_users.append(user["id"])
+        return auth_users
     
     # get gemini api key to using ai
     async def get_gemini_api(self, id):
-        if id not in self.cache:
-            self.cache[id] = await self.get_user(id)
         user = await self.get_user(id)
         return user.get("gemini_api", None)
 
     # add/update gemini api key
     async def update_gemini_api(self, id, api):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
         await self.col.update_one({"id": id}, {"$set": {"gemini_api": api}})
     
     # get translation language to translate
     async def get_tr_lang(self, id):
-        if id not in self.cache:
-            self.cache[id] = await self.get_user(id)
         user = await self.get_user(id)
         return user.get("tr_lang", "en")
     
     # update translation language
     async def update_tr_lang(self, id, language):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
         await self.col.update_one({"id": id}, {"$set": {"tr_lang": language}})
     
     # to upload qr code (as photo or file)
     async def is_qr_as_file(self, id):
-        if id not in self.cache:
-            self.cache[id] = await self.get_user(id)
         user = await self.get_user(id)
         return user.get("as_file", False)
 
     # update qr code upload mode (photo or file)
     async def update_qr_as_file(self, id, as_file):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
         await self.col.update_one({"id": id}, {"$set": {"as_file": as_file}})
 
 

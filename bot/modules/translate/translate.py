@@ -22,7 +22,7 @@ async def translate(bot, message):
     else:
         text = message.text.split(" ", 1)[1]
     
-    language = await db.get_tr_lang(message.chat.id)
+    language = await db.get_tr_lang(message.from_user.id)
     
     translator = Translator()
     message = await message.reply_text("`Translating...`")

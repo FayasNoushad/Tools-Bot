@@ -33,5 +33,7 @@ async def tr_cb_data(_, message):
             alert_text = f"Language changed to {lang_text}"
             await message.answer(text=alert_text, show_alert=True)
         except Exception as error:
+            if 'MESSAGE_NOT_MODIFIED' in str(error):
+                return
             print(error)
             await message.message.edit_text("Something wrong.")

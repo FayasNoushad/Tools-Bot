@@ -54,7 +54,7 @@ async def gemini_ai_text(_, message, text=""):
         return
     
     # To avoid command only messages
-    if message.text.startswith("/") and (" " not in message.text) and (not message.reply_to_message) and (not message.reply_to_message.text):
+    if message.text.startswith("/") and (" " not in message.text) and ((not message.reply_to_message) and (not message.reply_to_message.text)):
         return
     
     m = await message.reply_text("Please wait...", quote=True)
@@ -68,7 +68,7 @@ async def gemini_ai_text(_, message, text=""):
             query = message.text.split(" ", 1)[1]
     
     api = await db.get_gemini_api(message.from_user.id)
-    if not api:
+    if api is None:
         await no_api(message)
         return
     genai.configure(api_key=api)
