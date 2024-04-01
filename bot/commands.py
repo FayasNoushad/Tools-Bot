@@ -1,5 +1,6 @@
 from .admin import auth
 from .help import HELP_TEXT, HELP_BUTTONS
+from .modules.translate import set_language
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -50,17 +51,37 @@ BUTTONS = InlineKeyboardMarkup(
     ]
 )
 
+GROUP_COMMANDS = ["start", "help", "about"]
 
-@Client.on_message(filters.group & filters.command(["start", "help", "about"]))
+
+async def redirect_command(_, message):
+    command = message.text.split()[1]
+    if command == "start":
+        await start(_, message, cb=True)
+        return
+    if command == "help":
+        await help(_, message)
+        return
+    if command == "about":
+        await about(_, message)
+        return
+    if command in set_language.SET_LANG_COMMANDS:
+        await set_language.settings(_, message)
+        return
+    return
+
+
+@Client.on_message(filters.group & filters.command(GROUP_COMMANDS))
 async def group_commands(bot, message):
     
     # authorising
     if not (await auth(message.from_user.id)):
         return
     
+    command = message.text.split()[0].replace("/", "").split("@")[0]
     username = (await bot.get_me()).username
     buttons = InlineKeyboardMarkup(
-        [[InlineKeyboardButton('Click here', url=f'https://telegram.me/{username}?start=help')]]
+        [[InlineKeyboardButton('Click here', url=f'https://telegram.me/{username}?start={command}')]]
     )
     await message.reply_text(
         text="You can use this command in private chat with me.",
@@ -78,7 +99,7 @@ async def start(bot, message, cb=False):
     
     if not cb:
         if len(message.text.split()) > 1:
-            await help(bot, message)
+            await redirect_command(bot, message)
             return
     
     text=START_TEXT.format(message.from_user.mention)

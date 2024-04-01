@@ -1,6 +1,7 @@
 from ...admin import auth
-from ...help import MORE_HELP_ONLY
+from ...help import MORE_HELP
 from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 HELP_TEXT = """
@@ -16,20 +17,32 @@ HELP_TEXT = """
 @Client.on_message(
     filters.command(["trhelp", "tr_help", "translatehelp", "translate_help"])
 )
-async def tr_help(bot, message, cb=False):
+async def tr_help(_, message, cb=False):
     
     # authorising
     if not (await auth(message.from_user.id)):
         return
     
+    buttons = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("Set Language", callback_data="tr-settings"),
+                InlineKeyboardButton("Languages List", callback_data="tr-languages")
+            ],
+            [
+                MORE_HELP
+            ]
+        ]
+    )
+    
     if cb:
         await message.message.edit_text(
             text=HELP_TEXT,
-            reply_markup=MORE_HELP_ONLY
+            reply_markup=buttons
         )
     else:
         await message.reply_text(
             text=HELP_TEXT,
             quote=True,
-            reply_markup=MORE_HELP_ONLY
+            reply_markup=buttons
         )

@@ -1,5 +1,7 @@
 from ...database import db
 from .commands import tr_help
+from .set_language import settings
+from .languages_list import languages_list
 from pyrogram.types import InlineKeyboardMarkup
 from googletrans.constants import LANGUAGES
 from .set_language import language_buttons, LANG_SET_TEXT
@@ -14,6 +16,14 @@ async def tr_cb_data(_, message):
     
     if data == "help":
         await tr_help(_, message, cb=True)
+        return
+    
+    if data == "settings":
+        await settings(_, message, cb=True)
+        return
+    
+    if data == "languages":
+        await languages_list(_, message, cb=True)
         return
     
     if data.startswith("page+"):

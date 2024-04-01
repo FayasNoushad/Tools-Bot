@@ -7,6 +7,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 LANG_SET_TEXT = "Select your language for translating. Current default language is `{}`."
+SET_LANG_COMMANDS = ["set_lang", "set_default_language", "set_tr", "setlang"]
 
 
 def language_buttons():
@@ -62,19 +63,15 @@ def language_buttons():
                 callback_data="tr-page+"+str(page_no)
             )
         )
-        lang_help_buttons = InlineKeyboardButton("Language Help", callback_data="tr-help")
         pages[page_no-1].append(no_buttons)
+        lang_help_buttons = InlineKeyboardButton("Language Help", callback_data="tr-help")
         help_buttons = [lang_help_buttons, MORE_HELP]
         pages[page_no-1].append(help_buttons)
     return pages
 
 
-@Client.on_message(
-    filters.command(
-        ["set_lang", "set_default_language", "set_tr", "setlang"]
-    )
-)
-async def settings(bot, message):
+@Client.on_message(filters.command(SET_LANG_COMMANDS))
+async def settings(bot, message, cb=False):
     
     # authorising
     if not (await auth(message.from_user.id)):
@@ -102,11 +99,19 @@ async def settings(bot, message):
     
     language = await db.get_tr_lang(message.from_user.id)
     lang_text = f"{LANGUAGES[language].capitalize()} ({language})"
-    await message.reply_text(
-        text=LANG_SET_TEXT.format(lang_text),
-        disable_web_page_preview=True,
-        reply_markup=InlineKeyboardMarkup(
-            language_buttons()[0]
-        ),
-        quote=True
-    )
+    text = LANG_SET_TEXT.format(lang_text)
+    buttons = InlineKeyboardMarkup(language_buttons()[0])
+    
+    if cb:
+        await message.message.edit_text(
+            text=text,
+            disable_web_page_preview=True,
+            reply_markup=buttons
+        )
+    else:
+        await message.reply_text(
+            text=text,
+            disable_web_page_preview=True,
+            reply_markup=buttons,
+            quote=True
+        )
