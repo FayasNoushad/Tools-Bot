@@ -44,6 +44,6 @@ def help_buttons():
 
 HELP_BUTTONS = InlineKeyboardMarkup(help_buttons())
 
-MORE_HELP =  [InlineKeyboardButton("More Help", callback_data="help")]
+MORE_HELP =  InlineKeyboardButton("More Help", callback_data="help")
 
-MORE_HELP_ONLY = InlineKeyboardMarkup([MORE_HELP])
+MORE_HELP_ONLY = InlineKeyboardMarkup([[MORE_HELP]])

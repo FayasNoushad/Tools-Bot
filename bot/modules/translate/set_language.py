@@ -1,5 +1,6 @@
 from ...database import db
 from ...admin import auth
+from ...help import MORE_HELP
 from googletrans.constants import LANGUAGES
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -61,7 +62,10 @@ def language_buttons():
                 callback_data="tr-page+"+str(page_no)
             )
         )
+        lang_help_buttons = InlineKeyboardButton("Language Help", callback_data="tr-help")
         pages[page_no-1].append(no_buttons)
+        help_buttons = [lang_help_buttons, MORE_HELP]
+        pages[page_no-1].append(help_buttons)
     return pages
 
 
