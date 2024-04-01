@@ -11,6 +11,7 @@ ADMIN_HELP = """
 /unauth: To unauthorise a user
 /auth_users: To get authorised users
 /admins: To get all admins
+/status: To get bot status
 """
 
 async def add_user(id):
@@ -149,3 +150,20 @@ async def get_admins(bot, message):
     except Exception as error:
         print(error)
         await m.edit_text("Something wrong.")
+
+# bot status
+@Client.on_message(filters.private & filters.command(["status", "bot_status"]))
+async def status(bot, message):
+    
+    # Checking admin or not
+    if message.from_user.id not in ADMINS:
+        return
+    
+    total_users = await db.total_users_count()
+    text = "**Bot Status**\n"
+    text += f"\n**Total Users:** `{total_users}`"
+    await message.reply_text(
+        text=text,
+        quote=True,
+        disable_web_page_preview=True
+    )
