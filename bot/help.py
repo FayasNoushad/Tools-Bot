@@ -19,7 +19,7 @@ HELP_TEXT = """--**More Help**--
 - /countryinfo_help: Help message for the country information plugin
 """
 
-def help_buttons():
+def help_buttons(admin=False):
     buttons = []
     buttons.append(InlineKeyboardButton("Gemini AI", callback_data="ai-help"))
     buttons.append(InlineKeyboardButton("Information", callback_data="info-help"))
@@ -33,6 +33,12 @@ def help_buttons():
             all_buttons.append([button])
         else:
             all_buttons[-1].append(button)
+    if admin:
+        all_buttons.append(
+            [
+                InlineKeyboardButton('Admin Help', callback_data='admin-help')
+            ]
+        )
     all_buttons.append(
         [
             InlineKeyboardButton('Home', callback_data='home'),
@@ -43,7 +49,6 @@ def help_buttons():
     return all_buttons
 
 HELP_BUTTONS = InlineKeyboardMarkup(help_buttons())
-
+ADMIN_HELP_BUTTONS = InlineKeyboardMarkup(help_buttons(admin=True))
 MORE_HELP =  InlineKeyboardButton("More Help", callback_data="help")
-
 MORE_HELP_ONLY = InlineKeyboardMarkup([[MORE_HELP]])

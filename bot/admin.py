@@ -31,17 +31,24 @@ async def auth(id):
 
 # admin help
 @Client.on_message(filters.private & filters.command(["admin_help"]))
-async def admin_help(_, message):
+async def admin_help(_, message, cb=False):
         
         # Checking admin or not
         if message.from_user.id not in ADMINS:
             return
         
-        await message.reply_text(
-            text=ADMIN_HELP,
-            quote=True,
-            reply_markup=MORE_HELP_ONLY
-        )
+        if cb:
+            await message.message.edit_text(
+                text=ADMIN_HELP,
+                reply_markup=MORE_HELP_ONLY,
+                disable_web_page_preview=True
+            )
+        else:
+            await message.reply_text(
+                text=ADMIN_HELP,
+                quote=True,
+                reply_markup=MORE_HELP_ONLY
+            )
 
 
 # authorise user via database

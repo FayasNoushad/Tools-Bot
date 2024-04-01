@@ -1,5 +1,5 @@
-from .admin import auth
 from pyrogram import Client
+from .admin import auth, admin_help
 from .commands import start, help, about
 from .modules.info.cb import info_cb_data
 from .modules.qr_code.cb import qr_cb_data
@@ -15,6 +15,11 @@ async def cb_data(_, message):
     # authorising
     if not (await auth(message.from_user.id)):
         return
+    
+    if message.data.startswith("admin"):
+        data = message.data.split("-", 1)[1]
+        if data == "help":
+            await admin_help(_, message, cb=True)
     
     if message.data.startswith("country"):
         await country_cb_data(_, message)

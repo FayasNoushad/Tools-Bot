@@ -1,5 +1,6 @@
 from .admin import auth
-from .help import HELP_TEXT, HELP_BUTTONS
+from vars import ADMINS
+from .help import HELP_TEXT, HELP_BUTTONS, ADMIN_HELP_BUTTONS
 from .modules.translate import set_language
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -125,16 +126,21 @@ async def help(bot, message, cb=False):
     if not (await auth(message.from_user.id)):
         return
     
+    # For admins
+    if message.from_user.id in ADMINS:
+        buttons = ADMIN_HELP_BUTTONS
+    else:
+        buttons = HELP_BUTTONS
     if cb:
         await message.message.edit_text(
             text=HELP_TEXT,
-            reply_markup=HELP_BUTTONS,
+            reply_markup=buttons,
             disable_web_page_preview=True
         )
     else:
         await message.reply_text(
             text=HELP_TEXT,
-            reply_markup=HELP_BUTTONS,
+            reply_markup=buttons,
             disable_web_page_preview=True,
             quote=True
         )
