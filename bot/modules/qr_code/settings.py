@@ -1,11 +1,12 @@
 from ...database import db
 from ...admin import auth
+from ...help import MORE_HELP
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 @Client.on_message(filters.private & filters.command(["qr_settings", "qrsettings"]))
-async def display_settings(bot, message, cb=False, cb_text=False):
+async def display_settings(bot, message, cb=False):
     
     # authorising
     if not (await auth(message.from_user.id)):
@@ -24,21 +25,23 @@ async def display_settings(bot, message, cb=False, cb_text=False):
         as_file_btn.append(
             InlineKeyboardButton('Upload as Photo', callback_data='qr-set_af')
         )
+    
+    help_buttons = [
+        InlineKeyboardButton("QR Code Help", callback_data="qr-help"),
+        MORE_HELP
+    ]
     close_btn = [
         InlineKeyboardButton('Close ✖️', callback_data='close')
-        ]
-    settings_buttons = InlineKeyboardMarkup([as_file_btn, close_btn])
-    qr_text = "**QR Code Settings**"
+    ]
+    settings_buttons = InlineKeyboardMarkup([as_file_btn, help_buttons, close_btn])
+    qr_text = f"--**QR Code Settings**--\n\n**Current Mode:** `{'File' if as_file else 'Photo'}`"
     try:
         if cb:
-            if cb and cb_text:
-                await message.message.edit_text(
-                    text=qr_text,
-                    disable_web_page_preview=True,
-                    reply_markup=settings_buttons
-                )
-            else:
-                await message.edit_message_reply_markup(settings_buttons)
+            await message.message.edit_text(
+                text=qr_text,
+                disable_web_page_preview=True,
+                reply_markup=settings_buttons
+            )
         else:
             await message.reply_text(
                 text=qr_text,

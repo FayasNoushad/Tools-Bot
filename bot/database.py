@@ -81,6 +81,7 @@ class Database:
     async def update_gemini_api(self, id, api):
         if id not in self.cache:
             self.cache[id] = await self.get_user(id)
+        self.cache[id]["gemini_api"] = api
         await self.col.update_one({"id": id}, {"$set": {"gemini_api": api}})
     
     # get translation language to translate
@@ -92,18 +93,20 @@ class Database:
     async def update_tr_lang(self, id, language):
         if id not in self.cache:
             self.cache[id] = await self.get_user(id)
+        self.cache[id]["tr_lang"] = language
         await self.col.update_one({"id": id}, {"$set": {"tr_lang": language}})
     
     # to upload qr code (as photo or file)
     async def is_qr_as_file(self, id):
         user = await self.get_user(id)
-        return user.get("as_file", False)
+        return user.get("qr_as_file", False)
 
     # update qr code upload mode (photo or file)
     async def update_qr_as_file(self, id, as_file):
         if id not in self.cache:
             self.cache[id] = await self.get_user(id)
-        await self.col.update_one({"id": id}, {"$set": {"as_file": as_file}})
+        self.cache[id]["qr_as_file"] = as_file
+        await self.col.update_one({"id": id}, {"$set": {"qr_as_file": as_file}})
 
 
 db = Database()
