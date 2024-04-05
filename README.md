@@ -3,6 +3,20 @@ A telegram tools bot for groups
 
 ---
 
+## Deploy
+
+```sh
+git clone https://github.com/FayasNoushad/Tools-Bot.git
+cd Tools-Bot
+python3 -m venv venv
+. ./venv/bin/activate
+pip3 install -r requirements.txt
+# <Create Variables appropriately>
+python3 main.py
+```
+
+---
+
 ## Features
 
 - AI: AI using Gemini API
