@@ -77,7 +77,7 @@ async def settings(bot, message, cb=False):
     if not (await auth(message.from_user.id)):
         return
     
-    if message.chat.type != enums.ChatType.PRIVATE:
+    if message.message.chat.type != enums.ChatType.PRIVATE:
         username = (await bot.get_me()).username
         reply_markup = InlineKeyboardMarkup(
             [

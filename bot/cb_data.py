@@ -19,9 +19,7 @@ async def cb_data(_, message):
     
     for module in MODULES:
         if message.data.startswith(module):
-            data = message.data.split("-", 1)[1]
-            if data == "help":
-                await MODULES[module]["cb_data"](_, message)
+            await MODULES[module]["cb_data"](_, message)
             return
     
     if message.data == "home":
