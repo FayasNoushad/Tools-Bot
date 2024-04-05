@@ -1,6 +1,6 @@
 from .database import db
-from vars import AUTH, ADMINS
-from .help import MORE_HELP_ONLY
+from vars import ADMINS
+from .common import MORE_HELP_ONLY
 from pyrogram import Client, filters
 
 
@@ -13,20 +13,6 @@ ADMIN_HELP = """
 /admins: To get all admins
 /status: To get bot status
 """
-
-async def add_user(id):
-    if not await db.is_user_exist(id):
-        await db.add_user(id)
-    return
-
-
-async def auth(id):
-    await add_user(id)
-    authorised = (await db.is_authorised(id))
-    if AUTH and ((id in ADMINS) or authorised):
-        return True
-    else:
-        return False
 
 
 # admin help

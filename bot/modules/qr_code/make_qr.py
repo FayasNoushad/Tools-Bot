@@ -1,7 +1,7 @@
 import os
 import pyqrcode
 from ...database import db
-from ...admin import auth
+from ...authorise import auth
 from pyrogram import Client, filters
 
 

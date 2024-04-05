@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 from pyzbar.pyzbar import decode
-from ...admin import auth
+from ...authorise import auth
 from pyrogram import Client, filters
 
 @Client.on_message(

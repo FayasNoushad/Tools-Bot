@@ -1,5 +1,5 @@
 import ytthumb
-from ...admin import auth
+from ...authorise import auth
 from pyrogram import Client, filters
 
 

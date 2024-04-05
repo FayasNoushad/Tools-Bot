@@ -2,7 +2,7 @@ import os
 import textwrap
 import PIL.Image
 from ...database import db
-from ...admin import auth
+from ...authorise import auth
 from pyrogram import Client, filters
 import google.generativeai as genai
 from IPython.display import Markdown

@@ -1,6 +1,6 @@
 from ...database import db
-from ...admin import auth
-from ...help import MORE_HELP
+from ...authorise import auth
+from ...common import MORE_HELP
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 

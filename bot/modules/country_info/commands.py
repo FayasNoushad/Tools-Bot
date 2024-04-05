@@ -1,5 +1,5 @@
-from ...admin import auth
-from ...help import MORE_HELP_ONLY
+from ...authorise import auth
+from ...common import MORE_HELP_ONLY
 from pyrogram import Client, filters
 
 

@@ -1,4 +1,4 @@
-from .admin import auth
+from .authorise import auth
 from vars import ADMINS
 from .help import HELP_TEXT, HELP_BUTTONS, ADMIN_HELP_BUTTONS
 from .modules.translate import set_language

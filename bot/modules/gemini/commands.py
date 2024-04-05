@@ -1,7 +1,7 @@
 from ...database import db
-from ...admin import auth
+from ...authorise import auth
 from .gemini import check_api
-from ...help import MORE_HELP_ONLY
+from ...common import MORE_HELP_ONLY
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 

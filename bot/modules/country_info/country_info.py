@@ -1,5 +1,5 @@
 import urllib
-from ...admin import auth
+from ...authorise import auth
 from countryinfo import CountryInfo
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton

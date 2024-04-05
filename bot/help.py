@@ -1,43 +1,6 @@
+from .modules import MODULES
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-
-MODULES = {
-    "ai": {
-        "title": "Gemini AI",
-        "command": "ai_help",
-        "description": "Help message for the AI"
-    },
-    "info": {
-        "title": "Info",
-        "command": "info_help",
-        "description": "Help message for the info"
-    },
-    "qr": {
-        "title": "QR Code",
-        "command": "qr_help",
-        "description": "Help message for the QR"
-    },
-    "ytthumb": {
-        "title": "YouTube Thumbnail",
-        "command": "ytthumb_help",
-        "description": "Help message for the YouTube thumbnail"
-    },
-    "tr": {
-        "title": "Translation",
-        "command": "tr_help",
-        "description": "Help message for the translation"
-    },
-    "countryinfo": {
-        "title": "Country Information",
-        "command": "countryinfo_help",
-        "description": "Help message for the country information"
-    },
-    "dictionary": {
-        "title": "Dictionary",
-        "command": "dictionary_help",
-        "description": "Help message for the dictionary"
-    }
-}
 
 # Help Text without module help commands
 ONLY_HELP_TEXT = """--**More Help**--
@@ -90,5 +53,3 @@ def help_buttons(admin=False):
 HELP_TEXT = help_text()
 HELP_BUTTONS = InlineKeyboardMarkup(help_buttons())
 ADMIN_HELP_BUTTONS = InlineKeyboardMarkup(help_buttons(admin=True))
-MORE_HELP =  InlineKeyboardButton("More Help", callback_data="help")
-MORE_HELP_ONLY = InlineKeyboardMarkup([[MORE_HELP]])

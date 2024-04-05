@@ -1,6 +1,6 @@
 from ...database import db
-from ...admin import auth
-from ...help import MORE_HELP
+from ...authorise import auth
+from ...common import MORE_HELP
 from googletrans.constants import LANGUAGES
 from pyrogram import Client, filters, enums
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
