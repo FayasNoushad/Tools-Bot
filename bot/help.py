@@ -17,6 +17,7 @@ HELP_TEXT = """--**More Help**--
 - /ytthumb_help: Help message for the YouTube thumbnail plugin
 - /tr_help: Help message for the translation plugin
 - /countryinfo_help: Help message for the country information plugin
+- /dictionary_help: Help message for the dictionary plugin
 """
 
 def help_buttons(admin=False):
@@ -27,6 +28,7 @@ def help_buttons(admin=False):
     buttons.append(InlineKeyboardButton("YouTube Thumbnail", callback_data="ytthumb-help"))
     buttons.append(InlineKeyboardButton("Translation Help", callback_data="tr-help"))
     buttons.append(InlineKeyboardButton("Country Info", callback_data="countryinfo-help"))
+    buttons.append(InlineKeyboardButton("Dictionary Help", callback_data="dictionary-help"))
     all_buttons = []
     for button in buttons:
         if len(all_buttons) == 0 or (len(all_buttons[-1]) >= 2):

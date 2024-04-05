@@ -7,6 +7,7 @@ from .modules.translate.cb import tr_cb_data
 from .modules.gemini.cb import gemini_cb_data
 from .modules.yt_thumb.cb import ytthumb_cb_data
 from .modules.country_info.cb import country_cb_data
+from .modules.dictionary.cb import dictionary_cb_data
 
 
 @Client.on_callback_query()
@@ -43,6 +44,10 @@ async def cb_data(_, message):
     
     if message.data.startswith("qr"):
         await qr_cb_data(_, message)
+        return
+    
+    if message.data.startswith("dictionary"):
+        await dictionary_cb_data(_, message)
         return
     
     if message.data == "home":
