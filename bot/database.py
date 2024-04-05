@@ -15,7 +15,23 @@ class Database:
             auth=False,
             gemini_api=None,
             tr_lang="en",
-            qr_as_file=False
+            qr_as_file=False,
+            dictionary=dict(
+                phonetics=dict(
+                    phonetics=True,
+                    text=True,
+                    audio=True
+                ),
+                origin=True,
+                meanings=dict(
+                    meanings=True,
+                    part_of_speech=True,
+                    definitions=True,
+                    example=True,
+                    synonyms=False,
+                    antonyms=False
+                )
+            )
         )
     
     async def add_user(self, id):
@@ -107,6 +123,131 @@ class Database:
             self.cache[id] = await self.get_user(id)
         self.cache[id]["qr_as_file"] = as_file
         await self.col.update_one({"id": id}, {"$set": {"qr_as_file": as_file}})
+    
+    # to get dictionary settings
+    async def get_dictionary(self, id):
+        user = await self.get_user(id)
+        return user.get("dictionary", self.new_user(id)["dictionary"])
+    
+    # to get dictionary phonetics
+    async def get_phonetics(self, id):
+        user = await self.get_user(id)
+        return user["dictionary"]["phonetics"]["phonetics"]
+    
+    # to update dictionary phonetics
+    async def update_phonetics(self, id, phonetics):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["dictionary"]["phonetics"]["phonetics"] = phonetics
+        await self.col.update_one({"id": id}, {"$set": {"dictionary.phonetics.phonetics": phonetics}})
+    
+    # to get dictionary phonetics text
+    async def get_phonetics_text(self, id):
+        user = await self.get_user(id)
+        return user["dictionary"]["phonetics"]["text"]
+    
+    # to update dictionary phonetics text
+    async def update_phonetics_text(self, id, text):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["dictionary"]["phonetics"]["text"] = text
+        await self.col.update_one({"id": id}, {"$set": {"dictionary.phonetics.text": text}})
+    
+    # to get dictionary phonetics audio
+    async def get_phonetics_audio(self, id):
+        user = await self.get_user(id)
+        return user["dictionary"]["phonetics"]["audio"]
+    
+    # to update dictionary phonetics audio
+    async def update_phonetics_audio(self, id, audio):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["dictionary"]["phonetics"]["audio"] = audio
+        await self.col.update_one({"id": id}, {"$set": {"dictionary.phonetics.audio": audio}})
+    
+    # to get dictionary origin
+    async def get_origin(self, id):
+        user = await self.get_user(id)
+        return user["dictionary"]["origin"]
+    
+    # to update dictionary origin
+    async def update_origin(self, id, origin):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["dictionary"]["origin"] = origin
+        await self.col.update_one({"id": id}, {"$set": {"dictionary.origin": origin}})
+    
+    # to get dictionary meanings
+    async def get_meanings(self, id):
+        user = await self.get_user(id)
+        return user["dictionary"]["meanings"]["meanings"]
+    
+    # to update dictionary meanings
+    async def update_meanings(self, id, meanings):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["dictionary"]["meanings"]["meanings"] = meanings
+        await self.col.update_one({"id": id}, {"$set": {"dictionary.meanings.meanings": meanings}})
+    
+    # to get dictionary part of speech
+    async def get_part_of_speech(self, id):
+        user = await self.get_user(id)
+        return user["dictionary"]["meanings"]["part_of_speech"]
+    
+    # to update dictionary part of speech
+    async def update_part_of_speech(self, id, part_of_speech):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["dictionary"]["meanings"]["part_of_speech"] = part_of_speech
+        await self.col.update_one({"id": id}, {"$set": {"dictionary.meanings.part_of_speech": part_of_speech}})
+    
+    # to get dictionary definitions
+    async def get_definitions(self, id):
+        user = await self.get_user(id)
+        return user["dictionary"]["meanings"]["definitions"]
+    
+    # to update dictionary definitions
+    async def update_definitions(self, id, definitions):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["dictionary"]["meanings"]["definitions"] = definitions
+        await self.col.update_one({"id": id}, {"$set": {"dictionary.meanings.definitions": definitions}})
+    
+    # to get dictionary example
+    async def get_example(self, id):
+        user = await self.get_user(id)
+        return user["dictionary"]["meanings"]["example"]
+    
+    # to update dictionary example
+    async def update_example(self, id, example):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["dictionary"]["meanings"]["example"] = example
+        await self.col.update_one({"id": id}, {"$set": {"dictionary.meanings.example": example}})
+    
+    # to get dictionary synonyms
+    async def get_synonyms(self, id):
+        user = await self.get_user(id)
+        return user["dictionary"]["meanings"]["synonyms"]
+    
+    # to update dictionary synonyms
+    async def update_synonyms(self, id, synonyms):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["dictionary"]["meanings"]["synonyms"] = synonyms
+        await self.col.update_one({"id": id}, {"$set": {"dictionary.meanings.synonyms": synonyms}})
+    
+    # to get dictionary antonyms
+    async def get_antonyms(self, id):
+        user = await self.get_user(id)
+        return user["dictionary"]["meanings"]["antonyms"]
+    
+    # to update dictionary antonyms
+    async def update_antonyms(self, id, antonyms):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id]["dictionary"]["meanings"]["antonyms"] = antonyms
+        await self.col.update_one({"id": id}, {"$set": {"dictionary.meanings.antonyms": antonyms}})
 
 
 db = Database()
