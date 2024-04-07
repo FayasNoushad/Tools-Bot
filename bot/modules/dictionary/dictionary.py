@@ -8,7 +8,7 @@ async def dictionary(word, id):
     api = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
     response = requests.get(api)
     data = response.json()
-    if True:#try:
+    try:
         details = "--**Word Details**--\n"
         
         for i in data:
@@ -46,8 +46,8 @@ async def dictionary(word, id):
                             if ("antonyms" in definition) and (len(definition['antonyms']) > 0) and (await db.get_antonyms(id)):
                                 details += f"  Antonyms: `{', '.join(definition['antonyms'])}`\n"
         
-    #except:
-    #    details = "No details found for the word."
+    except:
+        details = "No details found for the word."
     return details
 
 
