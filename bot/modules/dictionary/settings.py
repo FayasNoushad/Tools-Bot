@@ -39,10 +39,14 @@ async def display_settings(_, message, cb=False):
     phonetics = await db.get_phonetics(user_id)
     text += f"\n**Phonetics:** `{'Yes' if phonetics else 'No'}`"
     buttons.append(
-        [InlineKeyboardButton(f"Phonetics - {'✅' if phonetics else '❎'}", callback_data="dictionary-set_phonetics")]
+        [
+            InlineKeyboardButton(
+                f"Phonetics - {'✅' if phonetics else '❎'}",
+                callback_data="dictionary-phonetics-set_phonetics")
+        ]
     )
     buttons.append(
-        [InlineKeyboardButton("Phonetics Settings", callback_data="dictionary-phonetics_settings")]
+        [InlineKeyboardButton("Phonetics Settings", callback_data="dictionary-phonetics-settings")]
     )
     origin = await db.get_origin(user_id)
     text += f"\n**Origin:** `{'Yes' if origin else 'No'}`"
@@ -86,3 +90,57 @@ async def display_settings(_, message, cb=False):
     except Exception as error:
         print(error)
 
+
+async def phonetics_settings(_, message, cb=False):
+    
+    # authorising
+    if not (await auth(message.from_user.id)):
+        return
+    
+    user_id = message.from_user.id
+    phonetics = await db.get_phonetics(user_id)
+    phonetics_text = await db.get_phonetics_text(user_id)
+    phonetics_audio = await db.get_phonetics_audio(user_id)
+    text = f"--**Phonetics Settings**--\n"
+    text += f"\n**Phonetics:** `{'Enabled' if phonetics else 'Disabled'}`"
+    text += f"\n**Phonetics Text:** `{'Yes' if phonetics_text else 'No'}`"
+    text += f"\n**Phonetics Audio:** `{'Yes' if phonetics_audio else 'No'}`"
+    buttons = [
+        [
+            InlineKeyboardButton(
+                f"Text - {'✅' if phonetics_text else '❎'}",
+                callback_data="dictionary-phonetics-set_phonetics_text"),
+            InlineKeyboardButton(
+                f"Audio - {'✅' if phonetics_audio else '❎'}",
+                callback_data="dictionary-phonetics-set_phonetics_audio")
+        ],
+        [InlineKeyboardButton("Back to Settings", callback_data="dictionary-settings")]
+    ]
+    help_buttons = [
+        InlineKeyboardButton("Dictionary Help", callback_data="dictionary-help"),
+        MORE_HELP
+    ]
+    close_btn = [
+        InlineKeyboardButton('Close ✖️', callback_data='close')
+    ]
+    all_buttons = []
+    all_buttons.extend(buttons)
+    all_buttons.append(help_buttons)
+    all_buttons.append(close_btn)
+    settings_buttons = InlineKeyboardMarkup(all_buttons)
+    try:
+        if cb:
+            await message.message.edit_text(
+                text=text,
+                disable_web_page_preview=True,
+                reply_markup=settings_buttons
+            )
+        else:
+            await message.reply_text(
+                text=text,
+                quote=True,
+                disable_web_page_preview=True,
+                reply_markup=settings_buttons
+            )
+    except Exception as error:
+        print(error)
