@@ -47,6 +47,12 @@ class Database:
         self.cache[id] = user
         return user
     
+    async def update_user(self, id, key, value):
+        if id not in self.cache:
+            self.cache[id] = await self.get_user(id)
+        self.cache[id][key] = value
+        await self.col.update_one({"id": id}, {"$set": {key: value}})
+    
     async def is_user_exist(self, id):
         user = await self.col.find_one({'id': int(id)})
         return True if user else False
