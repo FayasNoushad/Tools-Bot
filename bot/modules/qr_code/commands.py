@@ -16,7 +16,7 @@ Note: Only text and link QR codes are supported for encoding and decoding."""
 @Client.on_message(
     filters.command(["qrhelp", "qr_help", "qr_code_help"])
 )
-async def qr_help(bot, message, cb=False):
+async def qr_help(_, message, cb=False):
     
     # authorising
     if not (await auth(message.from_user.id)):
@@ -25,9 +25,7 @@ async def qr_help(bot, message, cb=False):
     buttons = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("QR Code Settings", callback_data="qr-settings")
-            ],
-            [
+                InlineKeyboardButton("Settings", callback_data="qr-settings"),
                 MORE_HELP
             ]
         ]

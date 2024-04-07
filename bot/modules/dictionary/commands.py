@@ -1,6 +1,7 @@
 from ...authorise import auth
-from ...common import MORE_HELP_ONLY
+from ...common import MORE_HELP
 from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 HELP_TEXT = """--**Dictionary Help**--
@@ -22,14 +23,25 @@ async def dictionary_help(_, message, cb=False):
     if not (await auth(message.from_user.id)):
         return
     
+    buttons = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    "Settings",
+                    callback_data="dictionary-settings"
+                ),
+                MORE_HELP
+            ]
+        ]
+    )
     if cb:
         await message.message.edit_text(
             text=HELP_TEXT,
-            reply_markup=MORE_HELP_ONLY
+            reply_markup=buttons
         )
     else:
         await message.reply_text(
             text=HELP_TEXT,
             quote=True,
-            reply_markup=MORE_HELP_ONLY
+            reply_markup=buttons
         )
