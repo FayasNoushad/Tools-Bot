@@ -37,7 +37,7 @@ def help_buttons(admin=False):
     if admin:
         all_buttons.append(
             [
-                InlineKeyboardButton('Admin Help', callback_data='admin-help-help')
+                InlineKeyboardButton('Admin Help', callback_data='admin-help')
             ]
         )
     all_buttons.append(

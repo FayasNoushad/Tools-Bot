@@ -1,7 +1,7 @@
 from pyrogram import Client
 from .help import MODULES
 from .authorise import auth
-from .admin import admin_help
+from .admin import admin_cb_data
 from .commands import start, help, about
 
 
@@ -13,9 +13,8 @@ async def cb_data(_, message):
         return
     
     if message.data.startswith("admin"):
-        data = message.data.split("-", 1)[1]
-        if data == "help":
-            await admin_help(_, message, cb=True)
+        await admin_cb_data(_, message)
+        return
     
     for module in MODULES:
         if message.data.startswith(module):

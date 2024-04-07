@@ -37,6 +37,17 @@ async def admin_help(_, message, cb=False):
             )
 
 
+async def admin_cb_data(_, message):
+    if not message.data.startswith("admin"):
+        return
+    if message.from_user.id not in ADMINS:
+        await message.answer("Only admin can use this command.", show_alert=True)
+        return
+    data = message.data.split("-", 1)[1]
+    if data == "help":
+        await admin_help(_, message, cb=True)
+
+
 # authorise user via database
 @Client.on_message(filters.command(["auth", "authorise"]))
 async def authorise(_, message):

@@ -1,5 +1,17 @@
 # Tools Bot
-A telegram tools bot for groups
+A telegram tools bot with more features for groups and personal use.
+
+---
+
+## Features
+
+- AI: AI using Gemini API
+- User/Chat Information
+- QR Code Encoding and Decoding
+- Translating messages
+- YouTube Video Thumbnail Downloading
+- Country Information
+- Word Dictionary
 
 ---
 
@@ -17,17 +29,6 @@ python3 main.py
 
 ---
 
-## Features
-
-- AI: AI using Gemini API
-- User/Chat Information
-- QR Code Encoding and Decoding
-- Translating messages
-- YouTube Video Thumbnail Downloading
-- Country Information
-
----
-
 ## Variables
 
 ### Required
@@ -37,6 +38,12 @@ python3 main.py
 - `BOT_TOKEN` Your bot token from @BotFather
 - `DATABASE_URL` MongoDB URL
 - `ADMINS` Administrators IDs seperated by whitespace
+
+### Not Required
+
+- `BOT_NAME` Your bot name
+- `DATABASE_NAME` MongoDB Database Name
+- `AUTH` Enable or Disable authentication
 
 ---
 
