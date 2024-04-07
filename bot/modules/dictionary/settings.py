@@ -16,59 +16,44 @@ async def display_settings(_, message, cb=False):
         return
     
     user_id = message.from_user.id
-    """
-            dictionary=dict(
-                phonetics=dict(
-                    phonetics=True,
-                    text=True,
-                    audio=True
-                ),
-                origin=True,
-                meanings=dict(
-                    meanings=True,
-                    part_of_speech=True,
-                    definitions=True,
-                    example=True,
-                    synonyms=False,
-                    antonyms=False
-                )
-            )
-    """
     text = f"--**Dictionary Settings**--\n"
-    buttons = []
+    
     phonetics = await db.get_phonetics(user_id)
     text += f"\n**Phonetics:** `{'Yes' if phonetics else 'No'}`"
-    buttons.append(
+    
+    origin = await db.get_origin(user_id)
+    text += f"\n**Origin:** `{'Yes' if origin else 'No'}`"
+    
+    meanings = await db.get_meanings(user_id)
+    text += f"\n**Meanings:** `{'Yes' if meanings else 'No'}`"
+    
+    buttons = [
         [
             InlineKeyboardButton(
                 f"Phonetics - {'✅' if phonetics else '❎'}",
                 callback_data="dictionary-phonetics-set_phonetics")
-        ]
-    )
-    buttons.append(
-        [InlineKeyboardButton("Phonetics Settings", callback_data="dictionary-phonetics-settings")]
-    )
-    origin = await db.get_origin(user_id)
-    text += f"\n**Origin:** `{'Yes' if origin else 'No'}`"
-    buttons.append(
+        ],
+        [
+            InlineKeyboardButton(
+                "Phonetics Settings",
+                callback_data="dictionary-phonetics-settings")
+        ],
         [
             InlineKeyboardButton(
                 f"Origin - {'✅' if origin else '❎'}",
                 callback_data="dictionary-set_origin")
-        ]
-    )
-    meanings = await db.get_meanings(user_id)
-    text += f"\n**Meanings:** `{'Yes' if meanings else 'No'}`"
-    buttons.append(
+        ],
         [
             InlineKeyboardButton(
                 f"Meanings - {'✅' if meanings else '❎'}",
                 callback_data="dictionary-meanings-set_meanings")
+        ],
+        [
+            InlineKeyboardButton(
+                "Meanings Settings",
+                callback_data="dictionary-meanings-settings")
         ]
-    )
-    buttons.append(
-        [InlineKeyboardButton("Meanings Settings", callback_data="dictionary-meanings-settings")]
-    )
+    ]
     help_buttons = [
         InlineKeyboardButton("Dictionary Help", callback_data="dictionary-help"),
         MORE_HELP
@@ -122,10 +107,17 @@ async def phonetics_settings(_, message, cb=False):
                 f"Audio - {'✅' if phonetics_audio else '❎'}",
                 callback_data="dictionary-phonetics-set_phonetics_audio")
         ],
-        [InlineKeyboardButton("Back to Settings", callback_data="dictionary-settings")]
+        [
+            InlineKeyboardButton(
+                "Back to Settings",
+                callback_data="dictionary-settings")
+        ]
     ]
     help_buttons = [
-        InlineKeyboardButton("Dictionary Help", callback_data="dictionary-help"),
+        InlineKeyboardButton(
+            "Dictionary Help",
+            callback_data="dictionary-help"
+        ),
         MORE_HELP
     ]
     close_btn = [
@@ -196,10 +188,17 @@ async def meanings_settings(_, message, cb=False):
                     f"Antonyms - {'✅' if antonyms else '❎'}",
                     callback_data="dictionary-meanings-set_antonyms")
             ],
-            [InlineKeyboardButton("Back to Settings", callback_data="dictionary-settings")]
+            [
+                InlineKeyboardButton(
+                    "Back to Settings",
+                    callback_data="dictionary-settings")
+            ]
         ]
         help_buttons = [
-            InlineKeyboardButton("Dictionary Help", callback_data="dictionary-help"),
+            InlineKeyboardButton(
+                "Dictionary Help",
+                callback_data="dictionary-help"
+            ),
             MORE_HELP
         ]
         close_btn = [
